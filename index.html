@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniGo</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            morado: "#c08bd6",
+            rosado: "#dfa0a0",
+            verde: "#d8f0cc",
+            fondo: "#f3caca",
+            suave: "#f4e7f7",
+            oscuro: "#2f2f2f"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-fondo min-h-screen">
+
+  <div id="app"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
