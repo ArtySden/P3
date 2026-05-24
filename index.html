@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UniGo</title>
 
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script>
@@ -13,8 +14,11 @@
         extend: {
           colors: {
             morado: "#c08bd6",
-            fondo: "#e7bcbc",
-            suave: "#f4e7f7"
+            rosado: "#dfa0a0",
+            verde: "#d8f0cc",
+            fondo: "#f3caca",
+            suave: "#f4e7f7",
+            oscuro: "#2f2f2f"
           }
         }
       }
@@ -22,97 +26,11 @@
   </script>
 </head>
 
-<body class="bg-fondo min-h-screen flex items-center justify-center">
+<body class="bg-fondo min-h-screen">
 
   <div id="app"></div>
 
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <script type="text/babel">
-
-    const usuariosUsados = [
-      "annie",
-      "alexandra",
-      "unigo",
-      "usuario123"
-    ];
-
-    function App() {
-
-      const [usuario, setUsuario] = React.useState("");
-      const [error, setError] = React.useState("");
-
-      function continuar() {
-
-        if (usuariosUsados.includes(usuario.toLowerCase())) {
-
-          setError("Este usuario ya existe");
-
-        } else {
-
-          setError("");
-
-          alert("Usuario creado correctamente");
-
-        }
-
-      }
-
-      return (
-
-        <div className="bg-white w-[420px] rounded-[35px] p-10 shadow-xl text-center">
-
-          <div className="w-24 h-24 bg-suave rounded-3xl flex items-center justify-center mx-auto mb-6">
-            <h1 className="text-5xl font-bold text-purple-600">
-              UG
-            </h1>
-          </div>
-
-          <h2 className="text-4xl font-bold mb-3">
-            Inicia sesión
-          </h2>
-
-          <p className="text-gray-600 mb-10 text-lg">
-            Tu vida universitaria organizada
-          </p>
-
-          <input
-            type="text"
-            placeholder="Escribe un nombre de usuario"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            className="w-full border border-purple-300 rounded-2xl px-5 py-4 outline-none text-lg"
-          />
-
-          {
-            error &&
-            <p className="text-red-500 text-left mt-3">
-              {error}
-            </p>
-          }
-
-          <button
-            onClick={continuar}
-            className="w-full bg-purple-300 hover:bg-purple-400 duration-300 rounded-2xl py-4 mt-6 font-bold text-xl"
-          >
-            Continuar
-          </button>
-
-          <p className="text-gray-400 text-sm mt-14">
-            Términos de uso y Política de privacidad
-          </p>
-
-        </div>
-
-      );
-
-    }
-
-    ReactDOM.createRoot(document.getElementById("app")).render(<App />);
-
-  </script>
-
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
