@@ -2,6 +2,13 @@ let paginaActual = "login";
 let seccionActual = "tareas";
 let categoriaTip = "productividad";
 
+const usuariosUsados = [
+  "annie",
+  "alexandra",
+  "unigo",
+  "usuario123"
+];
+
 const app = document.getElementById("app");
 
 function renderizar() {
@@ -30,29 +37,21 @@ function mostrarLogin() {
         </p>
 
         <input 
-          type="email"
-          placeholder="Correo electrónico"
+          id="usuarioInput"
+          type="text"
+          placeholder="Escribe un nombre de usuario"
           class="mt-10 w-full border border-purple-300 rounded-xl px-4 py-3 outline-none focus:border-purple-600"
         >
+
+        <p 
+          id="mensajeError"
+          class="mt-3 text-left text-red-500 font-semibold hidden">
+        </p>
 
         <button 
           onclick="entrar()"
           class="mt-4 w-full bg-purple-300 hover:bg-purple-400 rounded-xl px-4 py-3 font-bold text-gray-700 transition">
           Continuar
-        </button>
-
-        <div class="my-8 flex items-center gap-4">
-          <div class="h-px flex-1 bg-gray-300"></div>
-          <span class="font-bold text-gray-700">o</span>
-          <div class="h-px flex-1 bg-gray-300"></div>
-        </div>
-
-        <button class="w-full border border-purple-300 rounded-full px-4 py-3 font-semibold text-gray-600 hover:bg-gray-50">
-          G Continuar con Google
-        </button>
-
-        <button class="mt-4 w-full border border-purple-300 rounded-full px-4 py-3 font-semibold text-gray-600 hover:bg-gray-50">
-          O Continuar con Outlook
         </button>
 
         <p class="mt-12 text-xs text-gray-500">
@@ -64,6 +63,31 @@ function mostrarLogin() {
 }
 
 function entrar() {
+
+  let usuario = document
+    .getElementById("usuarioInput")
+    .value
+    .trim()
+    .toLowerCase();
+
+  let mensajeError = document.getElementById("mensajeError");
+
+  if (usuario === "") {
+
+    mensajeError.classList.remove("hidden");
+    mensajeError.textContent = "Escribe un nombre de usuario";
+
+    return;
+  }
+
+  if (usuariosUsados.includes(usuario)) {
+
+    mensajeError.classList.remove("hidden");
+    mensajeError.textContent = "Este usuario ya existe";
+
+    return;
+  }
+
   paginaActual = "principal";
   renderizar();
 }
@@ -176,281 +200,5 @@ function mostrarContenido() {
   }
 }
 
-function vistaTareas() {
-  let pendientes = 0;
-  let completadas = 0;
-
-  for (let i = 0; i < datos.tareas.length; i++) {
-    if (datos.tareas[i].estado === "pendiente") {
-      pendientes++;
-    } else {
-      completadas++;
-    }
-  }
-
-  let tarjetas = "";
-
-  for (let i = 0; i < datos.tareas.length; i++) {
-    let tarea = datos.tareas[i];
-
-    tarjetas += `
-      <article class="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between">
-        <div>
-          <h3 class="font-bold ${tarea.estado === "completada" ? "line-through text-gray-400" : "text-gray-800"}">
-            ${tarea.titulo}
-          </h3>
-          <p class="mt-1 text-sm text-gray-500">${tarea.fecha}</p>
-        </div>
-
-        <button class="bg-oscuro hover:bg-black text-white font-bold px-4 py-2 rounded-lg text-sm">
-          Entrar
-        </button>
-      </article>
-    `;
-  }
-
-  return `
-    <section>
-      <h2 class="mb-5 text-xl font-black text-gray-900">
-        Tareas universitarias
-      </h2>
-
-      <div class="bg-suave rounded-[32px] p-4">
-        <div class="grid gap-4 lg:grid-cols-2">
-          ${tarjetas}
-        </div>
-      </div>
-
-      <div class="mt-5 grid gap-4 sm:grid-cols-2">
-        <div class="bg-rosado rounded-3xl py-4 text-center text-xl font-black">
-          ${pendientes} Tareas Pendientes
-        </div>
-
-        <div class="bg-verde rounded-3xl py-4 text-center text-xl font-black">
-          ${completadas} Completada
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function vistaComida() {
-  let lista = "";
-
-  for (let i = 0; i < datos.comidas.length; i++) {
-    let comida = datos.comidas[i];
-
-    lista += `
-      <article class="py-4 border-b border-gray-200 last:border-b-0">
-        <div class="flex items-start gap-3">
-          <span class="text-xl">☆</span>
-
-          <div class="flex-1">
-            <h3 class="font-bold text-gray-800">${comida.nombre}</h3>
-            <p class="text-sm text-gray-500">${comida.descripcion}</p>
-            <p class="mt-1 text-sm font-semibold text-purple-700">${comida.oferta}</p>
-          </div>
-
-          <span class="font-bold">⌂ A</span>
-        </div>
-      </article>
-    `;
-  }
-
-  return `
-    <section>
-      <div class="mb-5 flex flex-col sm:flex-row gap-3 sm:items-center">
-        <button class="w-12 h-12 bg-oscuro text-white rounded-full font-bold">
-          ☆
-        </button>
-
-        <input 
-          type="text"
-          placeholder="¿Dónde estás buscando?"
-          class="flex-1 border border-gray-300 rounded-full px-5 py-3 outline-none focus:border-purple-500">
-      </div>
-
-      <div class="border border-gray-200 rounded-xl p-5 shadow-md">
-        <p class="text-sm text-gray-500">Lugares para comer.</p>
-
-        <h2 class="mt-2 font-black text-gray-900">
-          Encuentra opciones económicas cerca del campus:
-        </h2>
-
-        <div class="mt-5">
-          ${lista}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-function vistaEventos() {
-  let tarjetas = "";
-
-  for (let i = 0; i < datos.eventos.length; i++) {
-    let evento = datos.eventos[i];
-
-    tarjetas += `
-      <article class="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
-        
-        <img 
-          src="${evento.imagen}" 
-          alt="${evento.titulo}"
-          class="w-full h-40 object-cover"
-        >
-
-        <div class="p-4">
-          <span class="inline-block bg-yellow-200 px-3 py-1 rounded-full text-xs font-bold mb-2">
-            ${evento.tipo}
-          </span>
-
-          <h3 class="text-lg font-bold text-gray-900">
-            ${evento.titulo}
-          </h3>
-
-          <p class="mt-2 text-sm font-semibold text-gray-700">
-            ${evento.descripcion}
-          </p>
-
-          <p class="mt-3 text-xs text-gray-500">
-            ${evento.fecha}
-          </p>
-        </div>
-      </article>
-    `;
-  }
-
-  return `
-    <section>
-      <h2 class="mb-5 text-xl font-black text-gray-900">
-        Eventos Juveniles
-      </h2>
-
-      <div class="grid gap-5 lg:grid-cols-3">
-        ${tarjetas}
-      </div>
-    </section>
-  `;
-}
-
-function vistaLugares() {
-  let tarjetas = "";
-
-  for (let i = 0; i < datos.lugares.length; i++) {
-    let lugar = datos.lugares[i];
-
-    let servicios = "";
-
-    for (let j = 0; j < lugar.servicios.length; j++) {
-      servicios += `<li>• ${lugar.servicios[j]}</li>`;
-    }
-
-    tarjetas += `
-      <article class="bg-white border border-gray-200 rounded-xl shadow-md p-5">
-        <div class="flex justify-between">
-          <h3 class="font-black text-gray-900">${lugar.nombre}</h3>
-          <span class="text-sm text-gray-500">Gratis</span>
-        </div>
-
-        <p class="mt-4 text-gray-500">• ${lugar.horario}</p>
-
-        <ul class="mt-3 space-y-2 text-gray-600">
-          ${servicios}
-        </ul>
-      </article>
-    `;
-  }
-
-  return `
-    <section>
-      <h2 class="mb-5 text-xl font-black text-gray-900">
-        Sitios útiles
-      </h2>
-
-      <div class="grid gap-5 lg:grid-cols-3">
-        ${tarjetas}
-      </div>
-    </section>
-  `;
-}
-
-function vistaTips() {
-  let botones = `
-    <div class="mb-5 flex rounded-full bg-gray-300 p-1">
-      ${botonCategoria("productividad")}
-      ${botonCategoria("memorizacion")}
-      ${botonCategoria("bienestar")}
-    </div>
-  `;
-
-  let tarjetas = "";
-
-  let listaTips = datos.tips[categoriaTip];
-
-  for (let i = 0; i < listaTips.length; i++) {
-    let tip = listaTips[i];
-
-    let puntos = "";
-
-    for (let j = 0; j < tip.puntos.length; j++) {
-      puntos += `<li>• ${tip.puntos[j]}</li>`;
-    }
-
-    let colorBorde = "border-purple-400";
-
-    if (categoriaTip === "memorizacion") {
-      colorBorde = "border-blue-400";
-    }
-
-    if (categoriaTip === "bienestar") {
-      colorBorde = "border-green-400";
-    }
-
-    tarjetas += `
-      <article class="border ${colorBorde} p-5">
-        <h3 class="text-lg font-black text-gray-900">
-          ${tip.titulo}
-        </h3>
-
-        <p class="font-semibold text-gray-700">
-          ${tip.subtitulo}
-        </p>
-
-        <ul class="mt-3 space-y-2 text-sm text-gray-600">
-          ${puntos}
-        </ul>
-      </article>
-    `;
-  }
-
-  return `
-    <section>
-      ${botones}
-
-      <div class="grid gap-5 lg:grid-cols-2">
-        ${tarjetas}
-      </div>
-    </section>
-  `;
-}
-
-function botonCategoria(categoria) {
-  let activo = categoriaTip === categoria;
-
-  return `
-    <button 
-      onclick="cambiarCategoriaTip('${categoria}')"
-      class="flex-1 rounded-full px-3 py-3 text-sm font-bold capitalize transition
-      ${activo ? "bg-white text-gray-900 shadow" : "text-gray-700"}">
-      ${categoria}
-    </button>
-  `;
-}
-
-function cambiarCategoriaTip(categoria) {
-  categoriaTip = categoria;
-  mostrarContenido();
-}
-
+/* TODO LO DEMÁS DE ABAJO LO DEJAS IGUAL */
 renderizar();
