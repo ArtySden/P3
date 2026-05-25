@@ -1,31 +1,5 @@
 const datos = {
-  tareas: [
-    {
-      titulo: "Resolver Test 1 de Inglés",
-      fecha: "18/03/26 - 19/03/26",
-      estado: "pendiente"
-    },
-    {
-      titulo: "Estudiar para Cálculo 1",
-      fecha: "Hasta 23/03/26",
-      estado: "pendiente"
-    },
-    {
-      titulo: "Resolver Álgebra Lineal",
-      fecha: "Hasta 26/03/26",
-      estado: "pendiente"
-    },
-    {
-      titulo: "Leer Lectura 1 de Economía",
-      fecha: "Hasta 21/06/26",
-      estado: "pendiente"
-    },
-    {
-      titulo: "Revisar apuntes de Programación",
-      fecha: "Completada",
-      estado: "completada"
-    }
-  ],
+  tareas: [],
 
   comidas: [
     {
