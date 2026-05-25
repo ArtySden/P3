@@ -30,8 +30,8 @@ function mostrarLogin() {
         </p>
 
         <input 
-          type="email"
-          placeholder="Correo electrónico"
+          type="text"
+          placeholder="Introduzca un nombre de usuario"
           class="mt-10 w-full border border-purple-300 rounded-xl px-4 py-3 outline-none focus:border-purple-600"
         >
 
@@ -39,20 +39,6 @@ function mostrarLogin() {
           onclick="entrar()"
           class="mt-4 w-full bg-purple-300 hover:bg-purple-400 rounded-xl px-4 py-3 font-bold text-gray-700 transition">
           Continuar
-        </button>
-
-        <div class="my-8 flex items-center gap-4">
-          <div class="h-px flex-1 bg-gray-300"></div>
-          <span class="font-bold text-gray-700">o</span>
-          <div class="h-px flex-1 bg-gray-300"></div>
-        </div>
-
-        <button class="w-full border border-purple-300 rounded-full px-4 py-3 font-semibold text-gray-600 hover:bg-gray-50">
-          G Continuar con Google
-        </button>
-
-        <button class="mt-4 w-full border border-purple-300 rounded-full px-4 py-3 font-semibold text-gray-600 hover:bg-gray-50">
-          O Continuar con Outlook
         </button>
 
         <p class="mt-12 text-xs text-gray-500">
