@@ -162,6 +162,7 @@ function mostrarContenido() {
   }
 }
 
+
 function vistaTareas() {
   let pendientes = 0;
   let completadas = 0;
@@ -174,29 +175,43 @@ function vistaTareas() {
     }
   }
 
-  let tarjetas = "";
+  let tarjetas = `
+    <button
+      onclick="abrirModalTarea()"
+      class="bg-purple-300 hover:bg-purple-400 text-white text-3xl font-black rounded-xl p-4 h-[90px] transition">
+      +
+    </button>
+  `;
 
   for (let i = 0; i < datos.tareas.length; i++) {
     let tarea = datos.tareas[i];
 
     tarjetas += `
       <article class="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between">
+        
         <div>
           <h3 class="font-bold ${tarea.estado === "completada" ? "line-through text-gray-400" : "text-gray-800"}">
             ${tarea.titulo}
           </h3>
-          <p class="mt-1 text-sm text-gray-500">${tarea.fecha}</p>
+
+          <p class="mt-1 text-sm text-gray-500">
+            ${tarea.fecha}
+          </p>
         </div>
 
         <button class="bg-oscuro hover:bg-black text-white font-bold px-4 py-2 rounded-lg text-sm">
           Entrar
         </button>
+
       </article>
     `;
   }
 
   return `
-    <section>
+    <section class="relative">
+
+      <div id="modalTarea"></div>
+
       <h2 class="mb-5 text-xl font-black text-gray-900">
         Tareas universitarias
       </h2>
@@ -208,6 +223,7 @@ function vistaTareas() {
       </div>
 
       <div class="mt-5 grid gap-4 sm:grid-cols-2">
+
         <div class="bg-rosado rounded-3xl py-4 text-center text-xl font-black">
           ${pendientes} Tareas Pendientes
         </div>
@@ -215,9 +231,92 @@ function vistaTareas() {
         <div class="bg-verde rounded-3xl py-4 text-center text-xl font-black">
           ${completadas} Completada
         </div>
+
       </div>
+
     </section>
   `;
+}
+
+function abrirModalTarea() {
+  const modal = document.getElementById("modalTarea");
+
+  modal.innerHTML = `
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+
+      <div class="bg-white w-full max-w-md rounded-[32px] p-6 shadow-2xl">
+
+        <h2 class="text-2xl font-black text-gray-900 mb-5">
+          Agrega un curso
+        </h2>
+
+        <div class="space-y-4">
+
+          <input
+            type="text"
+            id="nombreCurso"
+            placeholder="Nombre del curso"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-purple-500"
+          >
+
+          <input
+            type="file"
+            id="archivoCurso"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3"
+          >
+
+          <input
+            type="date"
+            id="fechaCurso"
+            class="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-purple-500"
+          >
+
+        </div>
+
+        <div class="mt-6 flex gap-3 justify-end">
+
+          <button
+            onclick="cerrarModalTarea()"
+            class="px-5 py-3 rounded-xl bg-gray-200 hover:bg-gray-300 font-bold transition">
+            Cancelar
+          </button>
+
+          <button
+            onclick="guardarTarea()"
+            class="px-5 py-3 rounded-xl bg-purple-400 hover:bg-purple-500 text-white font-bold transition">
+            Guardar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function cerrarModalTarea() {
+  const modal = document.getElementById("modalTarea");
+  modal.innerHTML = "";
+}
+
+function guardarTarea() {
+  const nombre = document.getElementById("nombreCurso").value;
+  const fecha = document.getElementById("fechaCurso").value;
+
+  if (nombre === "" || fecha === "") {
+    alert("Completa los campos");
+    return;
+  }
+
+  datos.tareas.push({
+    titulo: nombre,
+    fecha: fecha,
+    estado: "pendiente"
+  });
+
+  cerrarModalTarea();
+  mostrarContenido();
 }
 
 function vistaComida() {
