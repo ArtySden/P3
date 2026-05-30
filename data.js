@@ -4,28 +4,147 @@ const datos = {
   comidas: [
     {
       nombre: "Café del Campus",
-      descripcion: "Desayunos y snacks a precios estudiantiles.",
-      oferta: "Menú desde S/ 8.00"
+      descripcion: "Desayunos, jugos, café y snacks a precios estudiantiles.",
+      oferta: "Menú desde S/ 8.00",
+      categoria: "Cafetería",
+      direccion: "Av. Universitaria 120, cerca del ingreso principal",
+      horario: "7:00 a.m. - 9:00 p.m.",
+      referencia: "Frente a la biblioteca central",
+      telefono: "999 111 222",
+      latitud: -13.1631,
+      longitud: -74.2236
     },
     {
       nombre: "Pizzería Studenti",
-      descripcion: "2x1 en pizzas con credencial universitaria.",
-      oferta: "Promoción estudiantil"
+      descripcion: "Pizzas personales, familiares y promociones para estudiantes.",
+      oferta: "2x1 con credencial universitaria",
+      categoria: "Pizza",
+      direccion: "Jr. Los Estudiantes 245",
+      horario: "12:00 p.m. - 11:00 p.m.",
+      referencia: "A dos cuadras del campus",
+      telefono: "999 222 333",
+      latitud: -13.1642,
+      longitud: -74.2248
     },
     {
       nombre: "Tacos El Rápido",
-      descripcion: "Comida rápida cerca del campus.",
-      oferta: "Combos desde S/ 10.00"
+      descripcion: "Tacos, burritos y combos rápidos para almorzar.",
+      oferta: "Combos desde S/ 10.00",
+      categoria: "Comida rápida",
+      direccion: "Av. Cultura 310",
+      horario: "11:00 a.m. - 10:00 p.m.",
+      referencia: "Al costado de una farmacia",
+      telefono: "999 333 444",
+      latitud: -13.1625,
+      longitud: -74.2254
     },
     {
       nombre: "Burger Student",
-      descripcion: "Hamburguesas con descuento para estudiantes.",
-      oferta: "20% OFF"
+      descripcion: "Hamburguesas, papas fritas y gaseosas con descuento.",
+      oferta: "20% OFF para universitarios",
+      categoria: "Hamburguesas",
+      direccion: "Jr. Las Palmeras 155",
+      horario: "1:00 p.m. - 11:30 p.m.",
+      referencia: "Cerca del paradero universitario",
+      telefono: "999 444 555",
+      latitud: -13.1618,
+      longitud: -74.2229
     },
     {
       nombre: "Sushi Express",
-      descripcion: "Comida japonesa económica.",
-      oferta: "Rolls 2x1"
+      descripcion: "Rolls, makis y comida japonesa económica.",
+      oferta: "Rolls 2x1",
+      categoria: "Sushi",
+      direccion: "Av. Japón 402",
+      horario: "4:00 p.m. - 11:00 p.m.",
+      referencia: "Frente a una tienda de postres",
+      telefono: "999 555 666",
+      latitud: -13.1650,
+      longitud: -74.2262
+    },
+    {
+      nombre: "Menú La Tía Rosa",
+      descripcion: "Menú casero con sopa, segundo y refresco.",
+      oferta: "Menú completo desde S/ 9.00",
+      categoria: "Menú casero",
+      direccion: "Jr. Progreso 178",
+      horario: "11:30 a.m. - 4:00 p.m.",
+      referencia: "Casa amarilla con letrero rojo",
+      telefono: "999 666 777",
+      latitud: -13.1609,
+      longitud: -74.2241
+    },
+    {
+      nombre: "Pollería El Buen Sabor",
+      descripcion: "Pollo a la brasa, chaufa y salchipapas.",
+      oferta: "1/4 de pollo desde S/ 12.00",
+      categoria: "Pollería",
+      direccion: "Av. Principal 520",
+      horario: "12:00 p.m. - 11:00 p.m.",
+      referencia: "Al frente del minimarket",
+      telefono: "999 777 888",
+      latitud: -13.1661,
+      longitud: -74.2232
+    },
+    {
+      nombre: "Chifa Dragón Universitario",
+      descripcion: "Aeropuerto, chaufa, tallarín saltado y sopas.",
+      oferta: "Chaufa desde S/ 8.00",
+      categoria: "Chifa",
+      direccion: "Jr. Comercio 88",
+      horario: "11:00 a.m. - 10:30 p.m.",
+      referencia: "A media cuadra del banco",
+      telefono: "999 888 999",
+      latitud: -13.1648,
+      longitud: -74.2217
+    },
+    {
+      nombre: "Juguería Frutal",
+      descripcion: "Jugos naturales, ensaladas de fruta y sándwiches.",
+      oferta: "Jugo + sándwich desde S/ 7.00",
+      categoria: "Juguería",
+      direccion: "Av. Los Álamos 301",
+      horario: "6:30 a.m. - 8:00 p.m.",
+      referencia: "Cerca de la puerta lateral",
+      telefono: "988 111 000",
+      latitud: -13.1620,
+      longitud: -74.2209
+    },
+    {
+      nombre: "Cevichería Costa Uni",
+      descripcion: "Ceviche, arroz con mariscos y leche de tigre.",
+      oferta: "Ceviche personal desde S/ 15.00",
+      categoria: "Cevichería",
+      direccion: "Jr. Mariscal 210",
+      horario: "10:30 a.m. - 5:00 p.m.",
+      referencia: "Local celeste en esquina",
+      telefono: "988 222 111",
+      latitud: -13.1670,
+      longitud: -74.2256
+    },
+    {
+      nombre: "Arepas Punto Rico",
+      descripcion: "Arepas rellenas, empanadas y bebidas frías.",
+      oferta: "Arepas desde S/ 6.00",
+      categoria: "Arepas",
+      direccion: "Av. Venezuela 77",
+      horario: "9:00 a.m. - 9:30 p.m.",
+      referencia: "Junto a una librería",
+      telefono: "988 333 222",
+      latitud: -13.1599,
+      longitud: -74.2230
+    },
+    {
+      nombre: "Dulce Break",
+      descripcion: "Postres, waffles, cafés helados y frappés.",
+      oferta: "Combo dulce desde S/ 10.00",
+      categoria: "Postres",
+      direccion: "Jr. Primavera 140",
+      horario: "2:00 p.m. - 10:00 p.m.",
+      referencia: "Frente al parque pequeño",
+      telefono: "988 444 333",
+      latitud: -13.1657,
+      longitud: -74.2204
     }
   ],
 
