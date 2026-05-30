@@ -191,6 +191,7 @@ function vistaTareas() {
         
         <div>
           <h3 class="font-bold ${tarea.estado === "completada" ? "line-through text-gray-400" : "text-gray-800"}">
+            ${tarea.favorito ? "⭐ " : ""}
             ${tarea.titulo}
           </h3>
 
@@ -199,10 +200,11 @@ function vistaTareas() {
           </p>
         </div>
 
-        <button class="bg-oscuro hover:bg-black text-white font-bold px-4 py-2 rounded-lg text-sm">
+        <button
+          onclick="abrirDetalleTarea(${i})"
+          class="bg-oscuro hover:bg-black text-white font-bold px-4 py-2 rounded-lg text-sm">
           Entrar
         </button>
-
       </article>
     `;
   }
@@ -300,6 +302,104 @@ function cerrarModalTarea() {
   modal.innerHTML = "";
 }
 
+function abrirDetalleTarea(indice) {
+
+  const tarea = datos.tareas[indice];
+
+  const modal = document.getElementById("modalTarea");
+
+  modal.innerHTML = `
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+
+      <div class="bg-white w-full max-w-2xl rounded-[32px] p-6 shadow-2xl">
+
+        <div class="flex justify-between items-center">
+
+          <h2 class="text-2xl font-black">
+            ${tarea.titulo}
+          </h2>
+
+          <button
+            onclick="toggleFavorito(${indice})"
+            class="text-3xl">
+            ${tarea.favorito ? "⭐" : "☆"}
+          </button>
+
+        </div>
+
+        <div class="mt-6">
+
+          <h3 class="font-bold">
+            Documento:
+          </h3>
+
+          ${
+            tarea.archivo
+              ? `
+                <a
+                  href="${tarea.archivo}"
+                  target="_blank"
+                  class="text-blue-600 underline">
+                  ${tarea.nombreArchivo}
+                </a>
+              `
+              : `
+                <p>No hay documento.</p>
+              `
+          }
+
+        </div>
+
+        <div class="mt-8 flex gap-3">
+
+          <button
+            onclick="cambiarEstado(${indice}, 'completada')"
+            class="flex-1 bg-green-500 text-white py-3 rounded-xl font-bold">
+            Completada
+          </button>
+
+          <button
+            onclick="cambiarEstado(${indice}, 'pendiente')"
+            class="flex-1 bg-red-400 text-white py-3 rounded-xl font-bold">
+            Sin completar
+          </button>
+
+        </div>
+
+        <button
+          onclick="cerrarModalTarea()"
+          class="mt-5 w-full bg-gray-200 py-3 rounded-xl font-bold">
+          Cerrar
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function toggleFavorito(indice) {
+  datos.tareas[indice].favorito =
+    !datos.tareas[indice].favorito;
+
+  abrirDetalleTarea(indice);
+}
+
+function cambiarEstado(indice, estado) {
+
+  datos.tareas[indice].estado = estado;
+
+  cerrarModalTarea();
+
+  mostrarContenido();
+}
+function cambiarEstado(indice, estado) {
+  datos.tareas[indice].estado = estado;
+
+  cerrarModalTarea();
+  mostrarContenido();
+}
+
 function guardarTarea() {
   const nombre = document.getElementById("nombreCurso").value;
   const fecha = document.getElementById("fechaCurso").value;
@@ -309,11 +409,16 @@ function guardarTarea() {
     return;
   }
 
-  datos.tareas.push({
-    titulo: nombre,
-    fecha: fecha,
-    estado: "pendiente"
-  });
+  const archivo = document.getElementById("archivoCurso").files[0];
+
+datos.tareas.push({
+  titulo: nombre,
+  fecha: fecha,
+  estado: "pendiente",
+  favorito: false,
+  archivo: archivo ? URL.createObjectURL(archivo) : null,
+  nombreArchivo: archivo ? archivo.name : "Sin archivo"
+});
 
   cerrarModalTarea();
   mostrarContenido();
