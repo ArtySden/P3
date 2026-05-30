@@ -162,6 +162,9 @@ function mostrarContenido() {
   }
 }
 
+/* =========================
+   TAREAS
+========================= */
 
 function vistaTareas() {
   let pendientes = 0;
@@ -303,9 +306,7 @@ function cerrarModalTarea() {
 }
 
 function abrirDetalleTarea(indice) {
-
   const tarea = datos.tareas[indice];
-
   const modal = document.getElementById("modalTarea");
 
   modal.innerHTML = `
@@ -379,20 +380,10 @@ function abrirDetalleTarea(indice) {
 }
 
 function toggleFavorito(indice) {
-  datos.tareas[indice].favorito =
-    !datos.tareas[indice].favorito;
-
+  datos.tareas[indice].favorito = !datos.tareas[indice].favorito;
   abrirDetalleTarea(indice);
 }
 
-function cambiarEstado(indice, estado) {
-
-  datos.tareas[indice].estado = estado;
-
-  cerrarModalTarea();
-
-  mostrarContenido();
-}
 function cambiarEstado(indice, estado) {
   datos.tareas[indice].estado = estado;
 
@@ -411,44 +402,28 @@ function guardarTarea() {
 
   const archivo = document.getElementById("archivoCurso").files[0];
 
-datos.tareas.push({
-  titulo: nombre,
-  fecha: fecha,
-  estado: "pendiente",
-  favorito: false,
-  archivo: archivo ? URL.createObjectURL(archivo) : null,
-  nombreArchivo: archivo ? archivo.name : "Sin archivo"
-});
+  datos.tareas.push({
+    titulo: nombre,
+    fecha: fecha,
+    estado: "pendiente",
+    favorito: false,
+    archivo: archivo ? URL.createObjectURL(archivo) : null,
+    nombreArchivo: archivo ? archivo.name : "Sin archivo"
+  });
 
   cerrarModalTarea();
   mostrarContenido();
 }
 
+/* =========================
+   COMIDA
+========================= */
+
 function vistaComida() {
-  let lista = "";
-
-  for (let i = 0; i < datos.comidas.length; i++) {
-    let comida = datos.comidas[i];
-
-    lista += `
-      <article class="py-4 border-b border-gray-200 last:border-b-0">
-        <div class="flex items-start gap-3">
-          <span class="text-xl">☆</span>
-
-          <div class="flex-1">
-            <h3 class="font-bold text-gray-800">${comida.nombre}</h3>
-            <p class="text-sm text-gray-500">${comida.descripcion}</p>
-            <p class="mt-1 text-sm font-semibold text-purple-700">${comida.oferta}</p>
-          </div>
-
-          <span class="font-bold">⌂ A</span>
-        </div>
-      </article>
-    `;
-  }
-
   return `
     <section>
+      <div id="modalComida"></div>
+
       <div class="mb-5 flex flex-col sm:flex-row gap-3 sm:items-center">
         <button class="w-12 h-12 bg-oscuro text-white rounded-full font-bold">
           ☆
@@ -456,7 +431,9 @@ function vistaComida() {
 
         <input 
           type="text"
-          placeholder="¿Dónde estás buscando?"
+          id="buscadorComida"
+          onkeyup="buscarComida()"
+          placeholder="Busca comida: pizza, menú, café, sushi..."
           class="flex-1 border border-gray-300 rounded-full px-5 py-3 outline-none focus:border-purple-500">
       </div>
 
@@ -467,13 +444,173 @@ function vistaComida() {
           Encuentra opciones económicas cerca del campus:
         </h2>
 
-        <div class="mt-5">
-          ${lista}
+        <div id="listaComidas" class="mt-5">
+          ${generarListaComidas(datos.comidas)}
         </div>
       </div>
     </section>
   `;
 }
+
+function generarListaComidas(listaComidas) {
+  let lista = "";
+
+  if (listaComidas.length === 0) {
+    return `
+      <div class="text-center py-10">
+        <p class="text-4xl">⌕</p>
+        <h3 class="mt-3 font-black text-gray-800">
+          No se encontró esa comida
+        </h3>
+        <p class="mt-1 text-sm text-gray-500">
+          Intenta buscar pizza, café, menú, sushi, hamburguesa, tacos, pollo, chifa, jugo o postres.
+        </p>
+      </div>
+    `;
+  }
+
+  for (let i = 0; i < listaComidas.length; i++) {
+    let comida = listaComidas[i];
+    let indiceOriginal = datos.comidas.indexOf(comida);
+
+    lista += `
+      <article 
+        onclick="abrirDetalleComida(${indiceOriginal})"
+        class="py-4 border-b border-gray-200 last:border-b-0 cursor-pointer hover:bg-purple-50 rounded-xl px-3 transition">
+        
+        <div class="flex items-start gap-3">
+          <span class="text-xl">☆</span>
+
+          <div class="flex-1">
+            <h3 class="font-bold text-gray-800">${comida.nombre}</h3>
+            <p class="text-sm text-gray-500">${comida.descripcion}</p>
+            <p class="mt-1 text-sm font-semibold text-purple-700">${comida.oferta}</p>
+            <p class="mt-1 text-xs text-gray-400">${comida.direccion}</p>
+          </div>
+
+          <span class="font-bold text-purple-700">Ver</span>
+        </div>
+      </article>
+    `;
+  }
+
+  return lista;
+}
+
+function buscarComida() {
+  const input = document.getElementById("buscadorComida");
+  const listaComidas = document.getElementById("listaComidas");
+
+  const textoBusqueda = input.value.toLowerCase().trim();
+
+  const comidasFiltradas = datos.comidas.filter((comida) => {
+    const textoComida = `
+      ${comida.nombre}
+      ${comida.descripcion}
+      ${comida.oferta}
+      ${comida.categoria}
+      ${comida.direccion}
+    `.toLowerCase();
+
+    return textoComida.includes(textoBusqueda);
+  });
+
+  listaComidas.innerHTML = generarListaComidas(comidasFiltradas);
+}
+
+function abrirDetalleComida(indice) {
+  const comida = datos.comidas[indice];
+  const modal = document.getElementById("modalComida");
+
+  modal.innerHTML = `
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+
+      <div class="bg-white w-full max-w-5xl rounded-[32px] p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <p class="text-sm font-bold text-purple-600">${comida.categoria}</p>
+
+            <h2 class="text-2xl lg:text-3xl font-black text-gray-900">
+              ${comida.nombre}
+            </h2>
+
+            <p class="mt-2 text-gray-500">
+              ${comida.descripcion}
+            </p>
+          </div>
+
+          <button
+            onclick="cerrarModalComida()"
+            class="bg-gray-200 hover:bg-gray-300 w-10 h-10 rounded-full font-black">
+            X
+          </button>
+        </div>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-2">
+
+          <div class="space-y-4">
+
+            <div class="bg-suave rounded-2xl p-4">
+              <h3 class="font-black text-gray-900">Oferta</h3>
+              <p class="mt-1 text-purple-700 font-bold">${comida.oferta}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4">
+              <h3 class="font-black text-gray-900">Dirección</h3>
+              <p class="mt-1 text-gray-600">${comida.direccion}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4">
+              <h3 class="font-black text-gray-900">Horario</h3>
+              <p class="mt-1 text-gray-600">${comida.horario}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4">
+              <h3 class="font-black text-gray-900">Referencia</h3>
+              <p class="mt-1 text-gray-600">${comida.referencia}</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-4">
+              <h3 class="font-black text-gray-900">Teléfono</h3>
+              <p class="mt-1 text-gray-600">${comida.telefono}</p>
+            </div>
+
+          </div>
+
+          <div class="rounded-3xl overflow-hidden border border-gray-200 shadow-md min-h-[360px]">
+            <iframe
+              src="https://maps.google.com/maps?q=${comida.latitud},${comida.longitud}&z=16&output=embed"
+              width="100%"
+              height="360"
+              style="border:0;"
+              loading="lazy"
+              allowfullscreen>
+            </iframe>
+          </div>
+
+        </div>
+
+        <button
+          onclick="cerrarModalComida()"
+          class="mt-6 w-full bg-purple-400 hover:bg-purple-500 text-white py-3 rounded-xl font-bold transition">
+          Cerrar detalle
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+function cerrarModalComida() {
+  const modal = document.getElementById("modalComida");
+  modal.innerHTML = "";
+}
+
+/* =========================
+   EVENTOS
+========================= */
 
 function vistaEventos() {
   let tarjetas = "";
@@ -524,6 +661,10 @@ function vistaEventos() {
   `;
 }
 
+/* =========================
+   LUGARES
+========================= */
+
 function vistaLugares() {
   let tarjetas = "";
 
@@ -564,6 +705,10 @@ function vistaLugares() {
     </section>
   `;
 }
+
+/* =========================
+   TIPS
+========================= */
 
 function vistaTips() {
   let botones = `
